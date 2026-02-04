@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Security Monitoring Agent</title>
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    body {
+      background-color: #f8fafc;
+      color: #111827;
+    }
+
+    body.dark-mode {
+      background-color: #020617;
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .card {
+      background-color: #1e293b;
+      color: #e5e7eb;
+      border: 1px solid #334155;
+      box-shadow:
+        0 10px 25px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    body.dark-mode textarea {
+      background-color: #111827;
+      color: #e5e7eb;
+      border-color: #374151;
+    }
+
+    .card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container my-5">
+
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-outline-secondary btn-sm" onclick="toggleDarkMode()" id="darkModeBtn">
+      🌙 Dark Mode
+    </button>
+  </div>
+
+  <div class="card shadow border-0">
+    <div class="card-body">
+      <h2 class="text-center mb-1">🛡️ Security Monitoring Agent</h2>
+      <p class="text-center text-muted">
+        GenAI-powered log compression & anomaly detection
+      </p>
+
+      <form method="POST" action="/analyze">
+        <label class="form-label mt-3">
+          Paste system / security logs
+        </label>
+
+        <textarea
+          class="form-control"
+          name="logs"
+          rows="10"
+          placeholder="Paste logs here..."
+        ></textarea>
+
+        <div class="d-grid mt-4">
+          <button class="btn btn-danger btn-lg">
+            Analyze Security Logs
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem(
+      "theme",
+      document.body.classList.contains("dark-mode") ? "dark" : "light"
+    );
+    updateButton();
+  }
+
+  function updateButton() {
+    document.getElementById("darkModeBtn").innerText =
+      document.body.classList.contains("dark-mode")
+        ? "☀️ Light Mode"
+        : "🌙 Dark Mode";
+  }
+
+  window.onload = function () {
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark-mode");
+    }
+    updateButton();
+  };
+</script>
+
+</body>
+</html>

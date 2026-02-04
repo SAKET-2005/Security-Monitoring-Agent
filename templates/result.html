@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Security Analysis Result</title>
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    body {
+      background-color: #f8fafc;
+      color: #111827;
+    }
+
+    body.dark-mode {
+      background-color: #020617;
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .card {
+      background-color: #1e293b;
+      color: #e5e7eb;
+      border: 1px solid #334155;
+      box-shadow:
+        0 10px 25px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    body.dark-mode pre {
+      background-color: #111827;
+      color: #e5e7eb;
+      border: 1px solid #374151;
+    }
+
+    body.dark-mode .list-group-item {
+      background-color: #1e293b;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+
+    body.dark-mode .text-muted {
+      color: #9ca3af !important;
+    }
+
+    .card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+    }
+
+    /* 🔴 Subtle pulse for HIGH risk */
+    .pulse-high {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+      100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container my-5">
+
+  <!-- Dark Mode Toggle -->
+  <div class="d-flex justify-content-end mb-3">
+    <button
+      class="btn btn-outline-secondary btn-sm"
+      onclick="toggleDarkMode()"
+      id="darkModeBtn"
+    >
+      🌙 Dark Mode
+    </button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="row mb-4">
+
+    <!-- Risk -->
+    <div class="col-md-4">
+      <div class="card h-100 text-center">
+        <div class="card-body">
+          <h6 class="text-muted">Risk Level</h6>
+
+          {% if anomaly.risk == "HIGH" %}
+            <span class="badge bg-danger fs-4 px-4 py-2 pulse-high">HIGH</span>
+          {% elif anomaly.risk == "MEDIUM" %}
+            <span class="badge bg-warning fs-4 px-4 py-2">MEDIUM</span>
+          {% else %}
+            <span class="badge bg-success fs-4 px-4 py-2">LOW</span>
+          {% endif %}
+
+          <p class="mt-3 mb-1"><strong>Severity</strong></p>
+          <p class="fs-5">{{ anomaly.severity }} / 100</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confidence -->
+    <div class="col-md-4">
+      <div class="card h-100 text-center">
+        <div class="card-body">
+          <h6 class="text-muted">Detection Confidence</h6>
+          <p class="display-6 fw-bold text-primary">
+            {{ anomaly.confidence }}%
+          </p>
+          <p class="text-muted small">
+            Based on pattern frequency & IP diversity
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Token Reduction -->
+    <div class="col-md-4">
+      <div class="card h-100 text-center">
+        <div class="card-body">
+          <h6 class="text-muted">Token Reduction</h6>
+          <p>Original: {{ original_tokens }}</p>
+          <p>Compressed: {{ compressed_tokens }}</p>
+          <p class="fw-bold text-success">
+            ↓ {{ ((original_tokens - compressed_tokens) * 100 // original_tokens) }}%
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- INCIDENT SUMMARY -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5>🧾 Incident Summary</h5>
+      <p class="mb-0">{{ incident_summary }}</p>
+    </div>
+  </div>
+
+  <!-- 🏷️ ATTACK CLASSIFICATION (THIS WAS MISSING) -->
+  {% if anomaly.attack_labels %}
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5>🏷️ Attack Classification</h5>
+      {% for label in anomaly.attack_labels %}
+        <span class="badge bg-dark me-2 mb-2">{{ label }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- COMPRESSED LOGS -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5>🗜️ Compressed Logs</h5>
+      <pre class="p-3 rounded small mb-0">{{ compressed }}</pre>
+    </div>
+  </div>
+
+  <!-- ISSUES -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5>🚨 Detected Issues</h5>
+      <ul>
+        {% for issue in anomaly.issues %}
+          <li>{{ issue }}</li>
+        {% endfor %}
+      </ul>
+      <p><strong>Suggested Action:</strong> {{ anomaly.action }}</p>
+    </div>
+  </div>
+
+  <!-- EXPLANATION -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5>🧠 Explanation</h5>
+      <p class="mb-0">{{ explanation }}</p>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="card mb-5">
+    <div class="card-body">
+      <h5>🕒 Attack Timeline</h5>
+      <ul class="list-group list-group-flush">
+        {% for event, line in timeline %}
+          <li class="list-group-item">
+            {% if event == "FAILED" %}
+              <span class="badge bg-danger me-2">FAILED</span>
+            {% elif event == "SUCCESS" %}
+              <span class="badge bg-success me-2">SUCCESS</span>
+            {% else %}
+              <span class="badge bg-secondary me-2">INFO</span>
+            {% endif %}
+            {{ line }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem(
+      "theme",
+      document.body.classList.contains("dark-mode") ? "dark" : "light"
+    );
+    updateButton();
+  }
+
+  function updateButton() {
+    document.getElementById("darkModeBtn").innerText =
+      document.body.classList.contains("dark-mode")
+        ? "☀️ Light Mode"
+        : "🌙 Dark Mode";
+  }
+
+  window.onload = function () {
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark-mode");
+    }
+    updateButton();
+  };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+Jan 21 02:11:04 server sshd[1023]: Accepted password for user1 from 10.0.0.2 port 53421 ssh2
+Jan 21 02:12:18 server sshd[1028]: Failed password for root from 192.168.1.10 port 60214 ssh2
+Jan 21 02:12:22 server sshd[1029]: Failed password for root from 192.168.1.10 port 60215 ssh2
+Jan 21 02:12:25 server sshd[1030]: Failed password for root from 192.168.1.10 port 60216 ssh2
+Jan 21 02:12:28 server sshd[1031]: Failed password for root from 192.168.1.10 port 60217 ssh2
+Jan 21 02:12:31 server sshd[1032]: Failed password for root from 192.168.1.10 port 60218 ssh2
+Jan 21 02:12:40 server sshd[1040]: Accepted password for admin from 10.0.0.5 port 54821 ssh2
+Jan 21 02:13:05 server sshd[1050]: Failed password for invalid user test from 203.0.113.45 port 41233 ssh2
+Jan 21 02:13:09 server sshd[1051]: Failed password for invalid user test from 203.0.113.45 port 41234 ssh2
+Jan 21 02:13:15 server sshd[1052]: Failed password for invalid user test from 203.0.113.45 port 41235 ssh2
+Jan 21 02:13:45 server sshd[1060]: Accepted password for user2 from 10.0.0.8 port 56788 ssh2
+Jan 21 02:14:10 server kernel: Firewall: IN=eth0 OUT= MAC=00:0c:29:ab:cd:ef SRC=198.51.100.23 DST=10.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=47 ID=54321 PROTO=TCP SPT=443 DPT=22
+Jan 21 02:14:22 server kernel: Firewall: IN=eth0 OUT= MAC=00:0c:29:ab:cd:ef SRC=198.51.100.23 DST=10.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=47 ID=54322 PROTO=TCP SPT=443 DPT=22
+Jan 21 02:14:30 server sshd[1070]: Failed password for root from 198.51.100.23 port 34567 ssh2
+Jan 21 02:14:35 server sshd[1071]: Failed password for root from 198.51.100.23 port 34568 ssh2
+Jan 21 02:14:38 server sshd[1072]: Failed password for root from 198.51.100.23 port 34569 ssh2
+Jan 21 02:14:41 server sshd[1073]: Failed password for root from 198.51.100.23 port 34570 ssh2
+Jan 21 02:15:00 server sshd[1080]: Accepted password for user3 from 172.16.0.9 port 59012 ssh2
+Jan 21 02:15:12 server sshd[1085]: Failed password for root from 172.16.0.9 port 59020 ssh2
+Jan 21 02:15:18 server sshd[1086]: Failed password for root from 172.16.0.9 port 59021 ssh2
+Jan 21 02:15:25 server sshd[1087]: Failed password for root from 172.16.0.9 port 59022 ssh2
+Jan 21 02:15:40 server sshd[1090]: Failed password for root from 172.16.0.9 port 59023 ssh2
+Jan 21 02:16:10 server systemd-logind[300]: New session 12 of user user1.
+Jan 21 02:16:25 server systemd-logind[300]: Session 12 logged out.
+Jan 21 02:17:05 server sshd[1100]: Failed password for invalid user guest from 45.33.32.156 port 42100 ssh2
+Jan 21 02:17:08 server sshd[1101]: Failed password for invalid user guest from 45.33.32.156 port 42101 ssh2
+Jan 21 02:17:11 server sshd[1102]: Failed password for invalid user guest from 45.33.32.156 port 42102 ssh2
+Jan 21 02:17:14 server sshd[1103]: Failed password for invalid user guest from 45.33.32.156 port 42103 ssh2
+Jan 21 02:17:18 server sshd[1104]: Failed password for invalid user guest from 45.33.32.156 port 42104 ssh2
+Jan 21 02:17:45 server sshd[1110]: Accepted password for admin from 10.0.0.5 port 55231 ssh2
